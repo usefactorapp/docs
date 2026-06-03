@@ -1,55 +1,144 @@
-# Mintlify Starter Kit
+# Factor Docs
 
-Use the starter kit to get your docs deployed and ready to customize.
+Merge Risk Intelligence for Distributed Backend Systems.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+Factor helps engineering teams understand what could break in production before a pull request is merged.
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+It analyzes pull requests in the context of your system and surfaces risks that traditional code review and CI miss.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+---
 
-## AI-assisted writing
+## 🧠 What Factor does
 
-Set up your AI coding tool to work with Mintlify:
+Modern backend systems are complex, and most production issues are not caught by tests or CI.
 
-```bash
-npx skills add https://mintlify.com/docs
+Factor focuses on system-level risks, including:
+
+- Hidden assumptions in code
+- Failure scenarios under real conditions
+- Cross-service and downstream impacts
+- Missing validation and edge cases
+- Business logic risks in critical workflows
+
+---
+
+## ⚙️ How it works
+
+Factor runs automatically on every pull request after installation.
+
+```text
+PR opened or updated
+        ↓
+Factor analyzes code + repository context
+        ↓
+System-level risk analysis generated
+        ↓
+Results appear directly on the pull request
 ```
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+No manual triggers. No code changes required.
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+---
 
-## Development
+## 📚 Documentation
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+This repository contains the full documentation for Factor.
+
+### Start here
+
+- **[Overview](index.mdx)** — What Factor is and why it exists
+- **[Quickstart](getting-started/quickstart.mdx)** — Get Factor running in 5 minutes
+- **[How Factor Works](guides/how-factor-works.mdx)** — Technical breakdown of the analysis system
+
+---
+
+### Learn by example
+
+- **[Example Reviews](examples/example-reviews.mdx)** — Real PR analyses
+- **[Financial Systems](examples/financial.mdx)** — Risk in monetary logic
+- **[Authentication](examples/authentication.mdx)** — Security-sensitive flows
+- **[Background Jobs](examples/background-jobs.mdx)** — Async system risks
+- **[API Contracts](examples/api-contract.mdx)** — Integration stability
+- **[Data Migration](examples/data-migration.mdx)** — Schema and state changes
+
+---
+
+### Reference
+
+- **[Verdicts](reference/verdicts.mdx)** — How to interpret risk levels
+- **[FAQ](reference/faq.mdx)** — Common questions
+- **[Security & Privacy](reference/security.mdx)** — Data handling and safety
+
+---
+
+## 🎯 Why Factor exists
+
+Code review and CI are good at catching:
+
+- syntax errors
+- test failures
+- style issues
+
+But they often miss:
+
+- system-level behavior changes
+- hidden assumptions
+- cascading failures across services
+- real-world edge cases
+
+Factor exists to surface those risks before merge time.
+
+---
+
+## 🚀 Get started
+
+To start using Factor:
+
+1. Install Factor on your GitHub account
+2. Select repositories to enable
+3. Open a pull request
+
+Factor will automatically begin analyzing changes.
+
+---
+
+## 🔒 Security & trust
+
+Factor is built for private source code environments.
+
+- Only analyzes repositories you explicitly grant access to
+- Does not use customer code for model training
+- Does not expose code to other customers
+- Follows GitHub permission boundaries
+
+See full details in **Security & Privacy** docs.
+
+---
+
+## 💡 Outcome
+
+With Factor, engineers don’t just review code.
+
+They understand **production risk before it ships**.
 
 ```
-npm i -g mint
+
+---
+
+# 🧠 Why this works
+
+This README does 4 critical jobs:
+
+### 1. Instant positioning
+> Merge Risk Intelligence for Distributed Backend Systems
+
+### 2. Immediate clarity
+> what it does in 1–2 lines
+
+### 3. Fast mental model
+> PR → analysis → risk surfaced
+
+### 4. Guided navigation
+> tells users exactly what to click next
+
 ```
-
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
-```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
