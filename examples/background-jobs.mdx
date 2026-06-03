@@ -1,0 +1,34 @@
+---
+title: "Background Job Example"
+description: "Async processing failure modes"
+icon: "clock"
+---
+
+## The PR
+
+**Title**: Add email notification for invoice downloads
+
+**Summary**:
+When a customer downloads an invoice, we should send them a notification email for their records. This PR adds a background job that sends the email asynchronously.
+
+**Changes**:
+
+- New `EmailInvoiceJob` class that sends email
+- Job is enqueued when invoice is downloaded
+- Job has 3 retries on failure
+
+---
+
+## Factor Analysis
+
+### Verdict
+
+```
+REVIEW_REQUIRED
+```
+
+Async jobs introduce failure modes that need careful handling.
+
+---
+
+... (rest of file unchanged)

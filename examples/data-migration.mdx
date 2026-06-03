@@ -1,0 +1,34 @@
+---
+title: "Data Migration Example"
+description: "Schema change cascading impact"
+icon: "arrow-right"
+---
+
+## The PR
+
+**Title**: Add required `company_id` column to customers table
+
+**Summary**:
+Our system is adding multi-company support. Each customer must belong to a company. This PR adds a `company_id` column to the customers table and makes it required.
+
+**Changes**:
+
+- Database migration: Add `company_id` column (NOT NULL)
+- Application code assumes `company_id` is always present
+- Reporting queries updated to filter by company_id
+
+---
+
+## Factor Analysis
+
+### Verdict
+
+```
+BLOCK_REVIEW
+```
+
+This schema change has cascading impacts that require careful coordination.
+
+---
+
+... (rest of file unchanged)

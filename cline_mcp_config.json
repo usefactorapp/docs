@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "mintlify-docs": {
+      "url": "https://mintlify.com/docs/mcp",
+      "description": "Mintlify Docs MCP server for documentation search and filesystem queries"
+    },
+    "mintlify-dashboard": {
+      "url": "https://mcp.mintlify.com",
+      "description": "Mintlify MCP server for dashboard access and content management"
+    }
+  }
+}

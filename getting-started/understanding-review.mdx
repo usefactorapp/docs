@@ -1,0 +1,255 @@
+---
+title: "Understanding Factor Review"
+description: "Deep dive into every section of a Factor analysis report"
+icon: "search"
+---
+
+Factor's review is a structured risk analysis. Every section serves a specific purpose in helping you understand what could go wrong and what needs validation.
+
+## Verdict
+
+The verdict is the top-level assessment of the PR's risk profile.
+
+```text
+SAFE
+REVIEW_REQUIRED
+BLOCK_REVIEW
+```
+
+### SAFE
+
+The PR contains minimal risk factors. The changes are well-isolated, don't introduce assumptions, and have adequate test coverage for the modified logic.
+
+**How to respond**: You can merge with confidence. Factor is not replacing code review—it's saying the analysis shows low risk.
+
+**What it does NOT mean**: The code is perfect. It means Factor hasn't identified risk patterns or gaps that require deeper investigation.
+
+### REVIEW_REQUIRED
+
+The PR introduces risk factors that require human judgment. This might be assumptions, missing tests, downstream effects, or scenarios where the answer depends on your business logic.
+
+**How to respond**: Read the specific findings. Ask the questions Factor raises. Verify the assumptions. Add tests if needed. Then decide if the risk is acceptable.
+
+**What it does NOT mean**: The PR is unsafe. It means Factor has flagged things that deserve attention before merging.
+
+### BLOCK_REVIEW
+
+The PR has critical gaps that must be addressed: missing error handling, unvalidated external inputs, financial logic without safety checks, or security vulnerabilities.
+
+**How to respond**: Address the blocker before merging. Factor will explain exactly what's needed.
+
+**What it does NOT mean**: The PR is rejected permanently. It means specific, fixable issues block it. Fix them and Factor's verdict will update.
+
+---
+
+## Merge Blocker
+
+Merge Blockers are critical questions. They don't assert something is wrong—they ask whether you've considered a specific failure scenario.
+
+### Example
+
+> If an expired discount code were applied today, would the system still charge the customer?
+
+### Why Factor Asks Instead of Asserts
+
+Factor asks questions because the answer depends on your **business logic and requirements**, not the code alone. The codebase might allow expired codes, but that might be intentional.
+
+By asking, Factor ensures you've explicitly considered the scenario. This is critical for finding gaps.
+
+### Why Answering Validates Safety
+
+When you answer the question, you're confirming:
+
+1. You've thought through the failure case
+2. Your code handles it correctly (or you know why it doesn't)
+3. The behavior is intentional
+
+This is what makes the analysis effective. It's not about finding bugs—it's about ensuring reasoning is complete.
+
+### How to Respond
+
+Read each merge blocker question. Answer it. If the answer is "yes, the code handles it," explain how. If it's "no, the code doesn't handle it," decide if that's a problem.
+
+---
+
+## Potential Failure Scenarios
+
+This section shows **how things could break** given the PR's changes.
+
+### What This Section Shows
+
+- **When it happens**: The condition or sequence of events that triggers the failure
+- **How it unfolds**: The step-by-step progression through your system
+- **What breaks**: The downstream consequence
+
+### Example
+
+**Scenario**: Tax calculation not re-run on invoice update
+
+- **When**: An invoice is updated after tax rates change
+- **How it unfolds**:
+  1. Tax rate changes in your jurisdiction
+  2. Engineer updates an invoice's line items
+  3. Tax is not recalculated
+  4. Invoice total is now incorrect
+  5. Payment processor charges wrong amount
+- **What breaks**: Customer overcharged or undercharged; reconciliation gap
+
+### How to Respond
+
+For each scenario, verify that either:
+
+1. **It's handled**: Your code prevents it (show how)
+2. **It's acceptable**: The scenario is so unlikely or low-impact it's not a concern
+3. **It's new work**: Add validation or add it to your backlog
+
+---
+
+## Confidence
+
+Confidence measures the **strength of Factor's reasoning**, not the probability that Factor is correct.
+
+### What Confidence Means
+
+High confidence means Factor's analysis is based on:
+
+- Clear patterns in the code
+- Explicit dependency chains
+- Direct risk signals
+
+Low confidence means:
+
+- Ambiguous code paths
+- Implicit assumptions about runtime behavior
+- Indirect risk signals
+
+### What Confidence Does NOT Mean
+
+- **Not certainty**: High confidence doesn't mean Factor is definitely right
+- **Not probability**: Low confidence doesn't mean Factor is likely wrong
+
+### How to Use Confidence
+
+- **High confidence findings**: Take seriously; they're backed by clear signals
+- **Medium confidence findings**: Verify them; ask if they apply to your codebase
+- **Low confidence findings**: Treat as possibilities; assess yourself whether they're real risks
+
+---
+
+## Missing Tests
+
+This section identifies **validation gaps** in your test coverage relative to the PR's changes.
+
+### Why Factor Suggests Tests
+
+When code changes introduce risk factors—assumptions, edge cases, external dependencies—those risks need validation. Tests are the proof that your code handles them.
+
+Factor doesn't suggest adding tests to improve coverage. It suggests adding tests to **validate the assumptions and edge cases the PR introduces**.
+
+### Example
+
+**PR**: Add retry logic for database connection failures
+
+**Missing test**: "What happens if all retries fail?"
+
+The test doesn't just improve coverage—it validates that your error handling works and that the user experiences the expected failure mode.
+
+### How to Use This Section
+
+For each suggested test:
+
+1. Decide if you need it (does this failure mode matter?)
+2. Implement it (it's often very simple)
+3. Verify your code passes it (if it doesn't, you've found a real gap)
+
+---
+
+## Risky Assumptions
+
+Code changes often contain hidden assumptions—things the code requires to be true but doesn't verify.
+
+### What This Section Shows
+
+Assumptions are things like:
+
+- "This API always returns the expected fields"
+- "This ID always exists in the database"
+- "This timestamp is in UTC"
+- "This external service never returns null"
+
+### Why Assumptions Create Production Incidents
+
+When assumptions are wrong, the code fails in ways that are hard to predict:
+
+- Null reference errors
+- Type mismatches
+- Silent data corruption
+- Cascading failures in dependent systems
+
+### Example
+
+**PR**: Add invoice tax calculation based on user location
+
+**Assumption**: Geolocation API always returns a country code
+
+**If wrong**: API fails, returns null, tax calculation crashes, invoice can't be created
+
+**How it manifests**: Users report "can't create invoices" without understanding why
+
+### How to Respond
+
+For each assumption:
+
+1. **Verify it's true**: Check if the assumption holds in your system
+2. **Add validation**: If you can't verify it, add code to check it and fail safely
+3. **Add tests**: Test the failure case to confirm your error handling works
+
+---
+
+## Hidden Impact
+
+This section identifies **downstream and cross-service effects** of the PR's changes.
+
+### Types of Hidden Impact
+
+- **Downstream services**: Services that depend on this system
+- **Cross-service data**: Shared databases, caches, or messaging systems
+- **Business processes**: Workflows or reporting that depend on this behavior
+- **User workflows**: How real users interact with the changed feature
+
+### Example
+
+**PR**: Change how invoice amounts are rounded for display
+
+**Direct change**: Rounding algorithm changes by 1 cent
+
+**Hidden impact**:
+
+- Reporting dashboards show different totals (business team notices discrepancy)
+- Accounting system can't reconcile (finance escalates as incident)
+- Customer-facing invoice PDF shows different total than what they were charged (support tickets)
+
+The 1-cent change cascades.
+
+### How to Respond
+
+For each identified impact:
+
+1. **Verify it's real**: Does the change actually affect this downstream system?
+2. **Check communication**: Do dependent teams know about this change?
+3. **Plan updates**: If downstream systems need to change too, coordinate the rollout
+
+---
+
+## Reading the Full Report
+
+When Factor posts a review, read it in this order:
+
+1. **Verdict**: Understand the overall risk level
+2. **Merge Blockers**: Answer the critical questions
+3. **Potential Failure Scenarios**: Verify they're handled or acceptable
+4. **Missing Tests**: Decide which tests add real value
+5. **Risky Assumptions**: Validate and add error handling
+6. **Hidden Impact**: Coordinate with dependent teams
+
+Then decide: Is this PR safe to merge?

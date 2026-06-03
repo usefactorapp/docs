@@ -1,0 +1,83 @@
+---
+title: "Financial Risk Example"
+description: "Discount code logic analysis"
+icon: "dollar-sign"
+---
+
+## The PR
+
+**Title**: Add support for multi-use discount codes
+
+**Summary**:
+Currently, discount codes are single-use—once applied to an order, they're marked as used and can't be applied again.
+
+This PR adds support for multi-use codes. Merchants can now create discount codes that multiple customers can use.
+
+**Changes**:
+
+- New `multi_use` flag on the Discount model
+- Modified checkout logic to skip the "mark as used" step if `multi_use == true`
+- Database migration to add the flag
+
+---
+
+## Factor Analysis
+
+### Verdict
+
+```
+REVIEW_REQUIRED
+```
+
+The PR introduces discount logic that requires validation of business rules before merging.
+
+---
+
+### Merge Blockers
+
+**Question 1: If an expired discount code were applied today, would the system still charge the customer?**
+
+The PR's logic checks if `multi_use == true` before marking a code as used. But it doesn't verify the code's expiration date. If a multi-use code has expired, it's still applied.
+
+**How to respond**: Verify that expiration checks happen _before_ the code is applied. Show the code that validates this.
+
+---
+
+**Question 2: What happens if a merchant changes a code from single-use to multi-use while orders are being processed?**
+
+If an order is in flight when the flag changes, it might skip the "mark as used" step even though the merchant intended it to be single-use.
+
+**How to respond**: Either:
+
+- Explain why this race condition is acceptable (e.g., grace period is fine)
+- Show code that prevents the race condition (e.g., snapshot the flag at order creation)
+- Add a test that verifies your chosen behavior
+
+---
+
+**Question 3: Can a customer apply the same multi-use code multiple times to different orders in the same session?**
+
+If the code is valid, nothing in this PR prevents reuse. If the intent is "once per customer," that validation is missing.
+
+**How to respond**: Clarify the business rule. If it's "unlimited uses," no change needed. If it's "once per customer," add validation.
+
+---
+
+### Potential Failure Scenarios
+
+**Scenario 1: Expired multi-use code applied**
+
+- **When**: Customer applies a multi-use discount code that has expired
+- **How it unfolds**:
+  1. Code is in the system and flagged `multi_use = true`
+  2. Code's expiration date has passed
+  3. Checkout logic skips expiration check (gap in this PR)
+  4. Code is applied, discount calculated
+  5. Order processed, customer charged less than they should be
+- **What breaks**: Revenue leakage; accounting gap; customer might not notice or might exploit it
+
+**Why it matters**: A single expired code could be applied to hundreds of orders if it's a popular discount.
+
+---
+
+... (rest of file unchanged)

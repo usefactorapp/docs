@@ -1,0 +1,150 @@
+---
+title: "Security & Privacy"
+description: "How Factor protects your code and data"
+icon: "shield"
+---
+
+Factor analyzes pull requests to identify potential production risks before code is merged.
+
+We understand that installing a GitHub App requires trust. This page explains what data Factor accesses, how it is processed, and how we protect it.
+
+## Security at a Glance
+
+- Factor only accesses repositories where the GitHub App has been explicitly installed.
+- Raw code is processed during analysis and discarded afterward.
+- Factor stores analysis results and repository metadata, not repository source code.
+- Customer code is not used to train public AI models.
+- Access is governed by GitHub permissions and repository authorization.
+
+## How Factor Processes Your Code
+
+When a pull request is analyzed:
+
+1. Factor retrieves the pull request diff and relevant repository context from GitHub.
+2. The code is analyzed to understand the change and identify potential risks.
+3. The minimum code and repository context required for analysis is sent to AI providers.
+4. Factor generates a review report and publishes the analysis to the pull request.
+5. Raw code content is discarded after analysis is complete.
+
+Factor stores the generated analysis and metadata required to operate the service. It does not permanently store pull request diffs or repository source code.
+
+## What Data Factor Accesses
+
+Factor may access:
+
+- Pull request metadata (title, description, author, status)
+- Pull request code changes
+- Repository structure and relevant source files
+- Repository metadata
+- Organization and installation metadata
+
+Factor only accesses repositories where the GitHub App has been installed and granted permission.
+
+## What Factor Stores
+
+Factor stores:
+
+- Analysis results
+- Review findings and verdicts
+- Pull request metadata
+- Repository metadata
+- Organization and installation metadata
+
+Factor does not permanently store:
+
+- Pull request diffs
+- Repository source code
+- Full file contents used during analysis
+
+## Data Usage
+
+Customer code is used solely to perform pull request analysis.
+
+Factor does not:
+
+- Use customer code to train public AI models
+- Sell customer data
+- Share repository contents with other customers
+- Use customer code for advertising or marketing
+
+Factor may use aggregated and anonymized operational metrics to improve the product.
+
+## AI Providers
+
+Factor uses third-party AI providers to generate analysis, including:
+
+- OpenAI
+- Anthropic
+- Groq
+
+Only the minimum code and repository context required to perform analysis is sent to these providers.
+
+## Access Boundaries
+
+Factor can only access repositories where the GitHub App has been explicitly installed and authorized.
+
+Factor cannot:
+
+- Access repositories outside authorized installations
+- Access private repositories without permission
+- Access repositories belonging to organizations where Factor is not installed
+
+Removing the GitHub App immediately prevents Factor from accessing future pull requests in that repository.
+
+## What Factor Does Not Do
+
+Factor is a read-only analysis system.
+
+Factor does not:
+
+- Execute your code
+- Deploy your code
+- Access production infrastructure
+- Modify source code
+- Push commits to repositories
+- Create pull requests
+- Store source code long-term
+
+## Data Retention
+
+Factor retains:
+
+- Analysis results
+- Pull request metadata
+- Repository metadata
+- Organization metadata
+
+Raw code content used during analysis is discarded after processing.
+
+If you would like data removed, contact us and we will work with you to fulfill the request.
+
+## Security Practices
+
+Current security measures include:
+
+- Encrypted communication over HTTPS
+- Access controls tied to GitHub permissions
+- Least-privilege repository access
+- Limited retention of source code content
+
+We continuously improve our security practices as the platform evolves.
+
+## Compliance
+
+Factor does not currently maintain formal compliance certifications such as SOC 2.
+
+As the product grows, we plan to invest in additional security controls, audits, and compliance programs.
+
+## Responsible Disclosure
+
+If you discover a security issue or vulnerability, please contact:
+
+**[security@usefactor.app](mailto:security@usefactor.app)**
+
+We appreciate responsible disclosure and will investigate reports promptly.
+
+## Questions
+
+For security or privacy questions, contact:
+
+**[security@usefactor.app](mailto:security@usefactor.app)**

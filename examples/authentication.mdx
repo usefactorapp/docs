@@ -1,0 +1,33 @@
+---
+title: "Authentication Example"
+description: "Session validation logic analysis"
+icon: "lock"
+---
+
+## The PR
+
+**Title**: Extend session timeout from 30 minutes to 1 hour
+
+**Summary**:
+Users are reporting that they're logged out too frequently, especially during long workflows. This PR extends the session timeout from 30 minutes to 1 hour.
+
+**Changes**:
+
+- Update session expiration constant: `SESSION_TIMEOUT = 3600` (was 1800)
+- No other logic changes
+
+---
+
+## Factor Analysis
+
+### Verdict
+
+```
+REVIEW_REQUIRED
+```
+
+The change appears simple, but security implications require verification.
+
+---
+
+... (rest of file unchanged)

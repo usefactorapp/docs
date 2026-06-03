@@ -1,0 +1,100 @@
+---
+title: "Verdicts & Risk Levels"
+description: "Understanding Factor's overall risk assessments"
+icon: "shield-check"
+---
+
+Factor assigns a verdict to every PR, representing the overall risk level. This guide explains what each verdict means and how to act on it.
+
+---
+
+## SAFE
+
+**Definition**: The PR has minimal risk factors. Changes are well-isolated, don't introduce hidden assumptions, and have adequate validation.
+
+### What This Means
+
+- The code changes don't depend on uncertain assumptions
+- Potential failure modes are either handled or highly unlikely
+- Test coverage is adequate for the changes
+- No obvious gaps in validation or error handling
+
+### How to Respond
+
+1. Read the analysis to understand Factor's reasoning
+2. Verify you agree with the assessment
+3. Merge with confidence
+
+### What It Does NOT Mean
+
+- The code is perfect
+- There are no bugs in the PR
+- Code review isn't needed
+- All edge cases are handled
+
+**What it means**: Factor hasn't identified risk patterns or gaps that require human attention before merging.
+
+### When You See SAFE
+
+This verdict is common for:
+
+- Simple, isolated changes (e.g., adding a utility function)
+- Refactoring with no behavior change
+- Display-only changes
+- Well-tested feature additions
+
+---
+
+## REVIEW_REQUIRED
+
+**Definition**: The PR introduces risk factors that require human judgment. These might be assumptions, missing tests, failure modes, or business logic that depends on your context.
+
+### What This Means
+
+- Factor has identified something that deserves attention
+- The risk might or might not be acceptable (context-dependent)
+- A human needs to make a judgment call
+- Additional validation, testing, or coordination might be needed
+
+### How to Respond
+
+1. **Read Factor's findings**: Understand exactly what it identified
+2. **Answer the questions**: Address any merge blockers Factor raised
+3. **Verify scenarios**: Confirm failure scenarios are handled or acceptable
+4. **Add tests if needed**: For critical paths, add the tests Factor suggested
+5. **Coordinate**: Talk to dependent teams if there are hidden impacts
+6. **Make a decision**: Decide if the risk is acceptable
+
+### What It Does NOT Mean
+
+- The PR is unsafe
+- You can't merge it
+- Factor is telling you to reject it
+
+**What it means**: Factor is saying "I found something that deserves your attention. Here's what it is."
+
+### When You See REVIEW_REQUIRED
+
+This verdict is common for:
+
+- New business logic (financial calculations, authorization)
+- External integrations (APIs, services)
+- Async operations (background jobs)
+- Database changes
+- Complex state mutations
+
+### Example Response
+
+Factor says: "What if the discount code has expired?"
+
+You respond: "Good catch. Let me check the code... Yes, expiration is checked before checkout. Here's the line."
+
+Then you merge.
+
+---
+
+## BLOCK_REVIEW
+
+**Definition**: The PR has critical gaps that must be addressed before merging. These are typically missing error handling, unvalidated inputs, or security vulnerabilities.
+
+This file continues with the rest of the verdicts content.

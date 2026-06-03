@@ -1,0 +1,160 @@
+---
+title: "How Factor Works"
+description: "Technical overview of Factor's analysis pipeline"
+icon: "settings"
+---
+
+Factor is a pre-merge risk analysis system for backend pull requests.
+
+Modern backend systems are difficult to reason about from a diff alone. Tests validate expected behavior, but they often don't reveal hidden assumptions, downstream impacts, or failure scenarios that emerge in production.
+
+Factor analyzes pull requests in the context of the repository to surface potential risks before code is merged.
+
+## How Factor Thinks
+
+Factor reasons about a change in three stages.
+
+### 1. Understand the Change
+
+Factor starts by understanding what changed and why.
+
+It analyzes:
+
+- Code changes in the pull request
+- Commit history
+- Pull request descriptions
+- Relevant repository context
+
+The goal is to determine:
+
+- What behavior changed
+- What assumptions the change introduces
+- Which parts of the system are affected
+
+### 2. Trace Dependencies
+
+Once the change is understood, Factor maps the surrounding system.
+
+This includes:
+
+- API endpoints
+- Service boundaries
+- Databases
+- External integrations
+- Internal dependencies
+
+Factor attempts to answer:
+
+- What does this code depend on?
+- What depends on this code?
+- What data flows through these paths?
+- Which systems could be affected if assumptions fail?
+
+### 3. Reason About Failure Modes
+
+Factor evaluates how the change could behave under real-world conditions.
+
+Examples include:
+
+- Invalid or unexpected inputs
+- External service failures
+- Missing validation
+- Authorization gaps
+- State inconsistencies
+- Downstream system effects
+
+Rather than checking whether code compiles or tests pass, Factor focuses on identifying conditions that could lead to incorrect behavior in production.
+
+## What Factor Produces
+
+Factor organizes findings into three categories.
+
+### Risk Summary
+
+A high-level assessment of merge risk.
+
+This includes:
+
+- Verdict (SAFE, REVIEW_REQUIRED, BLOCK_REVIEW)
+- Confidence score
+- Overall rationale
+
+### What Could Break
+
+Potential failure scenarios identified during analysis.
+
+This may include:
+
+- Hidden assumptions
+- Downstream impacts
+- Business logic risks
+- Cross-service effects
+
+### What To Validate
+
+Recommended validation before merging.
+
+This may include:
+
+- Merge blockers
+- Missing tests
+- Questions that require human verification
+
+## What Factor Finds
+
+Factor is particularly effective at identifying:
+
+- Business logic risks
+- Authorization and authentication issues
+- Financial and billing errors
+- State transition problems
+- Dependency and integration risks
+- Failure scenarios not covered by existing tests
+
+These issues often pass CI successfully while still creating production risk.
+
+## What Factor Does Not Do
+
+Factor does not evaluate:
+
+- Code style
+- Formatting
+- Naming conventions
+- Subjective design preferences
+
+Factor is focused on correctness and system behavior risk.
+
+## When Factor Is Most Valuable
+
+Factor is most effective when changes affect:
+
+- Payment and billing systems
+- Authentication and authorization flows
+- External integrations
+- Shared backend services
+- Critical business logic
+- Multi-service workflows
+
+These are areas where small code changes can have outsized production impact.
+
+## Limitations
+
+Factor provides analysis, not guarantees.
+
+Its findings should be treated as inputs to the review process, not as proof that a change is safe or unsafe.
+
+Human judgment remains essential for understanding business context, deployment considerations, and organization-specific requirements.
+
+## Using Factor
+
+A typical workflow looks like this:
+
+1. Open a pull request.
+2. Review Factor's findings.
+3. Investigate identified risks and assumptions.
+4. Validate recommended scenarios.
+5. Make an informed merge decision.
+
+Factor helps surface what could break.
+
+Your team decides what to do next.

@@ -1,0 +1,34 @@
+---
+title: "API Contract Example"
+description: "External integration assumption failures"
+icon: "link"
+---
+
+## The PR
+
+**Title**: Add shipping estimate to checkout
+
+**Summary**:
+Customers want to know shipping cost before placing an order. This PR integrates with a shipping API to calculate and display shipping estimates.
+
+**Changes**:
+
+- New API call to shipping service: `GET /estimate?zip={zip}&weight={weight}`
+- Shipping cost displayed in checkout
+- Estimated delivery date shown to customer
+
+---
+
+## Factor Analysis
+
+### Verdict
+
+```
+BLOCK_REVIEW
+```
+
+The PR has critical assumptions about external API behavior that must be validated.
+
+---
+
+... (rest of file unchanged)

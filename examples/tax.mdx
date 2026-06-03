@@ -1,0 +1,34 @@
+---
+title: "Tax Calculation Example"
+description: "Invoice tax logic analysis"
+icon: "receipt"
+---
+
+## The PR
+
+**Title**: Add sales tax to invoice calculations
+
+**Summary**:
+Currently, invoices show line items and totals, but no sales tax. This PR adds tax calculation based on the customer's location and item categories.
+
+**Changes**:
+
+- New `calculateTax()` function that calls a tax rate API
+- Tax amount added to invoice total
+- Invoice template updated to show tax line item
+
+---
+
+## Factor Analysis
+
+### Verdict
+
+```
+BLOCK_REVIEW
+```
+
+The PR has critical gaps in error handling and validation that must be addressed before merging.
+
+---
+
+... (rest of file unchanged)

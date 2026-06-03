@@ -1,0 +1,131 @@
+---
+title: "Quickstart"
+description: "Start building awesome documentation in minutes"
+icon: "rocket"
+---
+
+Factor analyzes your pull requests automatically once installed on your GitHub account.
+
+In a few minutes, you’ll have Factor running on your repositories and surfacing risks on every new PR.
+
+---
+
+## ⚡ Step 1: Install Factor
+
+Install Factor on your GitHub account.
+
+During installation, you’ll select:
+
+- Which organizations to connect
+- Which repositories Factor can access
+
+Once installed, Factor gains read access to pull requests and repository context required for analysis.
+
+👉 No code changes required.
+
+---
+
+## ⚙️ Step 2: Configure repositories
+
+After installation, choose the repositories you want Factor to monitor.
+
+You can:
+
+- Enable Factor on all repositories
+- Or select specific services (recommended for first setup)
+
+Factor will only analyze repositories you explicitly enable.
+
+---
+
+## 🔄 Step 3: Start your first analysis
+
+That’s it.
+
+Once configured, Factor automatically runs on:
+
+- New pull requests
+- New commits in open pull requests
+- Updated PR descriptions or changes
+
+No manual triggers required.
+
+---
+
+## 🧠 What happens next
+
+When a PR is opened, Factor will:
+
+1. Analyze code changes
+2. Map system dependencies
+3. Simulate failure scenarios
+4. Generate a structured risk report
+
+You’ll see:
+
+- Risk verdict (SAFE / REVIEW_REQUIRED / BLOCKER)
+- Potential failure scenarios
+- Missing tests or validations
+- Key assumptions in the code
+
+---
+
+## 📌 Example workflow
+
+```text
+Developer opens PR
+        ↓
+Factor analyzes change automatically
+        ↓
+Risk report appears on PR
+        ↓
+Reviewer uses Factor output to guide review
+```
+
+---
+
+## ⚠️ What you don’t need to do
+
+- No code instrumentation
+- No CI modifications
+- No manual triggers
+- No configuration per PR
+
+Factor works in the background once installed.
+
+---
+
+## 🧪 First run recommendation
+
+We recommend starting with:
+
+- One active backend service
+- A medium-complexity repository
+- A team that ships frequently
+
+This helps you immediately see meaningful analysis signals.
+
+---
+
+## 🚀 Next step
+
+Once Factor is running:
+
+- 👉 Open your first pull request
+- 👉 Review Factor’s analysis
+- 👉 Start identifying missing tests and hidden risks
+
+---
+
+## 🧠 Notes
+
+Factor is most effective on:
+
+- backend services
+- distributed systems
+- business logic-heavy codebases
+
+Less signal is expected on:
+
+- simple UI changes
+- formatting-only commits

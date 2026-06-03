@@ -1,0 +1,260 @@
+---
+title: "FAQ"
+description: "Common questions about Factor"
+icon: "circle-question-mark"
+---
+
+## Is Factor replacing code review?
+
+**No.** Factor and code review serve different purposes.
+
+**Code review** evaluates:
+
+- Style and best practices
+- Maintainability
+- Design patterns
+- Team preferences
+
+**Factor** evaluates:
+
+- Correctness of business logic
+- Hidden assumptions
+- Failure modes and edge cases
+- Cross-system impacts
+
+Factor **informs** code review. It doesn't replace it. Ideally, code reviewers read Factor's analysis and use it to guide their review.
+
+---
+
+## Can Factor be wrong?
+
+**Yes.** Factor performs analysis based on code patterns and reasoning, not absolute truth.
+
+Factor can be wrong because:
+
+1. **Incomplete context**: Factor doesn't know your full system, business rules, or deployment strategy
+2. **Reasoning errors**: The analysis might misinterpret complex code paths
+3. **False positives**: Factor might flag something you've already handled outside the PR
+
+When Factor is wrong, you should:
+
+1. Understand why it flagged something
+2. Decide if the risk is real
+3. Update your code or document your decision
+
+---
+
+## Why does Factor ask questions instead of making assertions?
+
+Because **the answer depends on your business logic**, not the code alone.
+
+Example:
+
+> "If an expired discount code is applied today, would the system still charge the customer?"
+
+This question can't be answered by analyzing the code. It requires knowing:
+
+- Your business rules for discount codes
+- Your architecture for applying discounts
+- Your error handling strategy
+- Your customer expectations
+
+By asking the question, Factor ensures you've explicitly considered the scenario. That's more valuable than Factor asserting "your code is wrong."
+
+---
+
+## How should confidence scores be interpreted?
+
+Confidence measures the **strength of Factor's reasoning**, not probability of correctness.
+
+**High confidence** means:
+
+- The analysis is based on clear, explicit patterns
+- Factor is confident in the reasoning
+- You should take it seriously
+
+**Low confidence** means:
+
+- The analysis is based on ambiguous signals
+- Factor is less certain about the reasoning
+- You should verify it yourself
+
+**Confidence is NOT**:
+
+- Probability that Factor is correct
+- Certainty in the finding
+- How serious the finding is
+
+You should take low-confidence findings seriously too. They're just saying "verify this yourself."
+
+---
+
+## Why did Factor flag something my CI missed?
+
+Because CI tests different things than Factor analyzes.
+
+**CI tests** verify:
+
+- Does the code run without errors?
+- Do the tests pass?
+- Are there linting/style violations?
+
+**Factor analyzes**:
+
+- Will this code cause problems in production under real conditions?
+- What assumptions is this code making?
+- What could go wrong in failure scenarios?
+
+A PR can pass all CI checks and still have logical issues. Factor finds those issues.
+
+Example: A financial calculation might pass all tests but have a rounding bug in a specific currency. CI can't test all currencies; Factor identifies the rounding assumption.
+
+---
+
+## What if I disagree with Factor's verdict?
+
+You can always merge despite Factor's verdict. But do this explicitly:
+
+1. **Understand the finding**: Read what Factor flagged
+2. **Verify it's not a real risk**: Confirm your code handles it or it's not applicable
+3. **Document your decision**: Leave a comment explaining why you disagree
+4. **Communicate with the team**: Let reviewers know you've made a deliberate choice
+
+This is healthy. Factor isn't always right, and you have context Factor doesn't have.
+
+---
+
+## Does Factor replace testing?
+
+**No.** Factor and testing are complementary.
+
+**Tests** verify:
+
+- Does the code work as written?
+- Does it handle the cases I thought of?
+
+**Factor** identifies:
+
+- Cases you didn't think of
+- Assumptions that might be wrong
+- Failure modes to test
+
+The best approach: Use Factor to identify what you need to test, then write those tests.
+
+---
+
+## What about simple changes like typo fixes or comment updates?
+
+Factor might not flag these as SAFE because they're not risky. But simple changes usually are safe.
+
+Factor shines on complex logic, external integrations, and business-critical code.
+
+---
+
+## Can I configure Factor's analysis?
+
+Currently, Factor analyzes with standard settings. Future versions might support configuration.
+
+For now, if Factor is too noisy or not thorough enough, provide feedback. Factor's analysis improves over time.
+
+---
+
+## What happens if Factor sees code it doesn't understand?
+
+Factor does its best to understand code, but some patterns are complex.
+
+If Factor's analysis seems off:
+
+1. **Read the full analysis**: Sometimes understanding comes from reading everything
+2. **Ask your team**: Get a second opinion
+3. **Provide feedback**: Help Factor learn
+
+---
+
+## Does Factor work with all programming languages?
+
+Factor is currently built for Python backend systems.
+
+It has specialized support for FastAPI and Flask applications, allowing it to understand API routes, request handlers, service interactions, and other framework-specific patterns when analyzing pull requests.
+
+Additional languages and frameworks are on the roadmap. Today, Factor delivers its strongest analysis on Python codebases.
+
+---
+
+## Is my code private when Factor analyzes it?
+
+**Yes.** Factor processes your PR content to perform analysis, but doesn't store or share your code.
+
+For details, see [Security & Privacy](/reference/security).
+
+---
+
+## How does Factor handle large or complex PRs?
+
+Factor analyzes PRs of any size, but:
+
+- **Very large PRs** (1000+ lines) might have analysis timeouts
+- **Complex PRs** (lots of interdependencies) might have lower confidence
+- **Breaking changes** might require deeper analysis
+
+For complex PRs, break them into smaller, focused PRs. Smaller PRs are easier to reason about and less risky to merge.
+
+---
+
+## What if Factor gives conflicting recommendations?
+
+Sometimes Factor identifies multiple risks that interact:
+
+- Scenario A requires handling X
+- Scenario B requires handling Y
+- If you handle both, Z becomes relevant
+
+Read the full analysis. Usually, there's a clear set of actions that address all recommendations.
+
+If not, prioritize:
+
+1. **Blockers** (must fix before merge)
+2. **High-confidence findings** (likely real risks)
+3. **Scenarios that align with your business** (most relevant to your system)
+
+---
+
+## How long does Factor take to analyze?
+
+Typically 30-60 seconds, depending on:
+
+- PR size
+- Code complexity
+- External service latency
+
+Very large or complex PRs might take longer.
+
+---
+
+## What if I think Factor missed something?
+
+Provide feedback. Factor's analysis improves with feedback from engineers.
+
+Common things engineers catch that Factor misses:
+
+- Context-specific business logic
+- Architecture decisions not visible in code
+- External systems not mentioned in the code
+
+This feedback helps Factor get better.
+
+---
+
+## Can Factor be used offline?
+
+Currently, Factor requires connectivity to analyze PRs (it's running in the cloud).
+
+Local-only analysis might be available in the future.
+
+---
+
+## How does Factor stay up-to-date with language changes?
+
+Factor's analysis is continuously updated to handle new language features and patterns.
+
+If you see Factor mishandling recent language features, report it. This helps Factor improve.
