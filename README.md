@@ -120,25 +120,3 @@ See full details in **Security & Privacy** docs.
 With Factor, engineers don’t just review code.
 
 They understand **production risk before it ships**.
-
-```
-
----
-
-# 🧠 Why this works
-
-This README does 4 critical jobs:
-
-### 1. Instant positioning
-> Merge Risk Intelligence for Distributed Backend Systems
-
-### 2. Immediate clarity
-> what it does in 1–2 lines
-
-### 3. Fast mental model
-> PR → analysis → risk surfaced
-
-### 4. Guided navigation
-> tells users exactly what to click next
-
-```
